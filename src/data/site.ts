@@ -1,0 +1,17 @@
+export const SITE = {
+  name: "EVINN",
+  tagline: "Electric Mobility Marketplace",
+  phone: "+92 300 1234567",
+  email: "info@evinn.pk",
+  address: "Lahore, Pakistan",
+  social: {
+    facebook: "https://facebook.com",
+    instagram: "https://instagram.com",
+    linkedin: "https://linkedin.com",
+    x: "https://x.com",
+    youtube: "https://youtube.com",
+  },
+} as const;
+
+export const telHref = `tel:${SITE.phone.replace(/\s/g, "")}`;
+export const whatsappHref = `https://wa.me/${SITE.phone.replace(/\D/g, "")}`;
