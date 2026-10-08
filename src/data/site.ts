@@ -2,8 +2,8 @@ export const SITE = {
   name: "EVINN",
   tagline: "Electric Mobility Marketplace",
   phone: "+92 300 1234567",
-  email: "info@evinn.pk",
-  address: "Lahore, Pakistan",
+  email: "evinnbwp@gmail.com",
+  address: "Bahawalpur, Pakistan",
   social: {
     facebook: "https://facebook.com",
     instagram: "https://instagram.com",
