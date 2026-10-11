@@ -6,7 +6,7 @@ export const SITE = {
   address: "Bahawalpur, Pakistan",
   social: {
     facebook: "https://facebook.com",
-    instagram: "https://instagram.com",
+    instagram: "https://www.instagram.com/evinn_pakistan?rpxt=cHp5Z2N4MGdoZ3R4",
     linkedin: "https://linkedin.com",
     x: "https://x.com",
     youtube: "https://youtube.com",
