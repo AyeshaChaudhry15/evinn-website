@@ -75,7 +75,7 @@ export function Pagination({
             className={cn(
               itemClass,
               target === page
-                ? "border-brand bg-brand text-ink-950"
+                ? "border-[#0057D9] bg-[#0057D9] text-ink-950"
                 : "border-line text-soft hover:border-line-strong hover:text-white",
             )}
           >

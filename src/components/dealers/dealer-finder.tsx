@@ -49,7 +49,7 @@ export function DealerFinder() {
                   {dealer.name}
                 </h2>
                 <p className="mb-4 flex items-center gap-1.5 text-sm text-slate-400">
-                  <MapPin className="h-3.5 w-3.5 text-brand" aria-hidden />
+                  <MapPin className="h-3.5 w-3.5 text-[#0057D9]" aria-hidden />
                   {dealer.location}
                 </p>
                 <a
@@ -58,7 +58,7 @@ export function DealerFinder() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-lg border border-slate-700/50 bg-ink-800 px-4 py-2.5 text-xs font-medium text-slate-300 transition-colors hover:border-brand/50 hover:text-white"
                 >
-                  <Navigation className="h-3.5 w-3.5 text-brand" aria-hidden />
+                  <Navigation className="h-3.5 w-3.5 text-[#FF8A00]" aria-hidden />
                   Get Directions
                 </a>
               </li>

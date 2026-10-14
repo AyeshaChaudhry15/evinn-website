@@ -44,7 +44,11 @@ export async function ProductCatalog({
     );
 
   const tabs = [
-    { label: "All", href: hrefWith(config.basePath, {}), active: !inStockOnly },
+    {
+      label: "All",
+      href: hrefWith(config.basePath, {}),
+      active: !inStockOnly,
+    },
     {
       label: "In stock",
       href: hrefWith(config.basePath, {}, { inStock: "true" }),
@@ -54,32 +58,34 @@ export async function ProductCatalog({
 
   return (
     <div className={`${container} py-10 lg:py-14`}>
-      <PageHeader
-        title={config.title}
-        description={config.description}
-        actions={
-          <nav
-            aria-label="Stock filter"
-            className="flex gap-1 rounded-lg border border-line bg-ink-900 p-1"
-          >
-            {tabs.map((tab) => (
-              <Link
-                key={tab.label}
-                href={tab.href}
-                aria-current={tab.active ? "page" : undefined}
-                className={cn(
-                  "rounded-md px-4 py-2 text-sm font-medium transition-colors",
-                  tab.active
-                    ? "bg-brand text-ink-950"
-                    : "text-soft hover:text-white",
-                )}
-              >
-                {tab.label}
-              </Link>
-            ))}
-          </nav>
-        }
-      />
+      <div className="[&_.page-header-title]:text-white [&_.page-header-description]:text-gray-400">
+        <PageHeader
+          title={config.title}
+          description={config.description}
+          actions={
+            <nav
+              aria-label="Stock filter"
+              className="flex gap-1 rounded-lg border border-[#1d2b38] bg-[#0a141e] p-1"
+            >
+              {tabs.map((tab) => (
+                <Link
+                  key={tab.label}
+                  href={tab.href}
+                  aria-current={tab.active ? "page" : undefined}
+                  className={cn(
+                    "rounded-md px-4 py-2 text-sm font-medium transition-colors",
+                    tab.active
+                      ? "bg-[#0057D9] text-white"
+                      : "text-gray-400 hover:bg-[#FF8A00]/10 hover:text-[#FF8A00]",
+                  )}
+                >
+                  {tab.label}
+                </Link>
+              ))}
+            </nav>
+          }
+        />
+      </div>
 
       {result.error || !result.data ? (
         <EmptyState
@@ -89,7 +95,7 @@ export async function ProductCatalog({
         />
       ) : result.data.items.length === 0 ? (
         <EmptyState
-          icon={<PackageSearch className="h-7 w-7" />}
+          icon={<PackageSearch className="h-7 w-7 text-[#FF8A00]" />}
           title={`No ${config.title.toLowerCase()} found`}
           description={
             inStockOnly
@@ -113,6 +119,7 @@ export async function ProductCatalog({
               </Reveal>
             ))}
           </ul>
+
           <Pagination
             pagination={result.data.pagination}
             pathname={config.basePath}

@@ -16,6 +16,7 @@ export function WarrantyChecker({ bikes }: { bikes: Bike[] }) {
   const [open, setOpen] = useState(false);
 
   const needle = query.trim().toLowerCase();
+
   const results = needle
     ? bikes.filter(
         (bike) =>
@@ -37,11 +38,13 @@ export function WarrantyChecker({ bikes }: { bikes: Bike[] }) {
       <div
         className="relative"
         onBlur={(event) => {
-          if (!event.currentTarget.contains(event.relatedTarget))
+          if (!event.currentTarget.contains(event.relatedTarget)) {
             setOpen(false);
+          }
         }}
       >
         <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-faint" />
+
         <input
           type="text"
           role="combobox"
@@ -61,8 +64,9 @@ export function WarrantyChecker({ bikes }: { bikes: Bike[] }) {
             if (event.key === "Enter" && results[0]) choose(results[0]);
           }}
           placeholder="Search or select your model..."
-          className="w-full rounded-xl border border-white/10 bg-ink-900 py-3.5 pl-11 pr-10 text-base text-white outline-none transition-colors focus:border-brand/60"
+          className="w-full rounded-xl border border-[#263541] bg-[#0B151E] py-3.5 pl-11 pr-10 text-base text-white outline-none transition-colors focus:border-[#0057D9]/70"
         />
+
         {query && (
           <button
             type="button"
@@ -72,7 +76,7 @@ export function WarrantyChecker({ bikes }: { bikes: Bike[] }) {
               setSelected(null);
               setOpen(true);
             }}
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-faint hover:text-white"
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-faint transition-colors hover:text-[#FF8A00]"
           >
             <X className="h-4 w-4" />
           </button>
@@ -82,7 +86,7 @@ export function WarrantyChecker({ bikes }: { bikes: Bike[] }) {
           <ul
             id={listId}
             role="listbox"
-            className="absolute z-10 mt-2 max-h-96 w-full overflow-y-auto rounded-xl border border-white/10 bg-ink-900 shadow-xl"
+            className="absolute z-10 mt-2 max-h-96 w-full overflow-y-auto rounded-xl border border-[#263541] bg-[#0B151E] shadow-xl"
           >
             {results.length > 0 ? (
               results.map((bike) => (
@@ -94,7 +98,7 @@ export function WarrantyChecker({ bikes }: { bikes: Bike[] }) {
                   <button
                     type="button"
                     onClick={() => choose(bike)}
-                    className="flex w-full items-center gap-3 border-b border-white/5 px-4 py-3 text-left transition-colors last:border-0 hover:bg-white/5"
+                    className="flex w-full items-center gap-3 border-b border-white/5 px-4 py-3 text-left transition-colors last:border-0 hover:bg-[#101b24]"
                   >
                     <span className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-white">
                       <ProductImage
@@ -104,14 +108,17 @@ export function WarrantyChecker({ bikes }: { bikes: Bike[] }) {
                         className="p-1"
                       />
                     </span>
+
                     <span className="min-w-0 flex-1">
                       <span className="block truncate text-sm font-medium text-white">
                         {bike.name}
                       </span>
+
                       <span className="text-xs text-faint">
                         {bike.brand?.displayName} · {capitalize(bike.type)}
                       </span>
                     </span>
+
                     <span className="shrink-0 text-xs text-gray-400">
                       {formatPKR(bike.price)}
                     </span>
@@ -130,7 +137,7 @@ export function WarrantyChecker({ bikes }: { bikes: Bike[] }) {
       {selected && (
         <section
           aria-live="polite"
-          className="mt-8 space-y-6 rounded-2xl border border-brand/30 bg-ink-900 p-6 sm:p-8"
+          className="mt-8 space-y-6 rounded-2xl border border-[#0057D9]/40 bg-[#0B151E] p-6 sm:p-8"
         >
           <div className="flex items-center gap-4">
             <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-white">
@@ -141,19 +148,22 @@ export function WarrantyChecker({ bikes }: { bikes: Bike[] }) {
                 className="p-1"
               />
             </div>
+
             <div>
-              <h2 className="text-xl font-bold text-brand sm:text-2xl">
+              <h2 className="text-xl font-bold text-[#0057D9] sm:text-2xl">
                 {selected.name}
               </h2>
+
               <p className="mt-1 text-sm text-gray-400">
                 {selected.brand?.displayName} · {formatPKR(selected.price)}
               </p>
             </div>
           </div>
 
-          <div className="rounded-xl border border-white/10 bg-ink-950 px-5 py-4">
+          <div className="rounded-xl border border-[#263541] bg-[#08121B] px-5 py-4">
             <p className="text-sm text-gray-400">Warranty Period</p>
-            <p className="mt-1 text-xl font-semibold text-white">
+
+            <p className="mt-1 text-xl font-semibold text-[#FF8A00]">
               {warranty && warranty.toUpperCase() !== "N/A"
                 ? warranty
                 : "Contact us for warranty details"}
@@ -165,9 +175,10 @@ export function WarrantyChecker({ bikes }: { bikes: Bike[] }) {
               ({ key, label }) => (
                 <div
                   key={key}
-                  className="rounded-lg border border-white/10 bg-ink-950 px-4 py-3"
+                  className="rounded-lg border border-[#263541] bg-[#08121B] px-4 py-3"
                 >
                   <dt className="text-xs text-faint">{label}</dt>
+
                   <dd className="mt-1 text-sm font-medium text-white">
                     {specValue(selected.specs, key)}
                   </dd>

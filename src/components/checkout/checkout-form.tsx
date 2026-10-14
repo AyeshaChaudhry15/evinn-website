@@ -9,7 +9,7 @@ import { Alert } from "@/components/ui/alert";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Field } from "@/components/ui/field";
 import { ProductImage } from "@/components/ui/product-image";
-import { buttonPrimary, input } from "@/components/ui/styles";
+import { input } from "@/components/ui/styles";
 import { errorMessage } from "@/lib/api";
 import { cart, useCart } from "@/lib/cart";
 import { cn } from "@/lib/cn";
@@ -46,14 +46,24 @@ const EMPTY_ADDRESS: ShippingAddress = {
 
 function validate(values: ShippingAddress): FieldErrors<ShippingAddress> {
   return {
-    fullName: values.fullName.trim() ? undefined : "Full name is required",
+    fullName: values.fullName.trim()
+      ? undefined
+      : "Full name is required",
+
     phoneNumber: !values.phoneNumber.trim()
       ? "Phone number is required"
       : isPhone(values.phoneNumber)
         ? undefined
         : "Enter a valid phone number, e.g. +92 300 1234567",
-    address: values.address.trim() ? undefined : "Address is required",
-    city: values.city.trim() ? undefined : "City is required",
+
+    address: values.address.trim()
+      ? undefined
+      : "Address is required",
+
+    city: values.city.trim()
+      ? undefined
+      : "City is required",
+
     postalCode: !values.postalCode.trim()
       ? "Postal code is required"
       : isPostalCode(values.postalCode)
@@ -62,7 +72,9 @@ function validate(values: ShippingAddress): FieldErrors<ShippingAddress> {
   };
 }
 
-const trimAddress = (values: ShippingAddress): ShippingAddress => ({
+const trimAddress = (
+  values: ShippingAddress,
+): ShippingAddress => ({
   fullName: values.fullName.trim(),
   phoneNumber: values.phoneNumber.trim(),
   address: values.address.trim(),
@@ -74,14 +86,18 @@ interface CheckoutFormProps {
   directBike?: Bike;
 }
 
-export function CheckoutForm({ directBike }: CheckoutFormProps) {
+export function CheckoutForm({
+  directBike,
+}: CheckoutFormProps) {
   const router = useRouter();
   const hydrated = useHydrated();
   const cartItems = useCart();
-  const [directQuantity, setDirectQuantity] = useState(1);
 
-  const [values, setValues] = useState<ShippingAddress>(EMPTY_ADDRESS);
-  const [errors, setErrors] = useState<FieldErrors<ShippingAddress>>({});
+  const [directQuantity, setDirectQuantity] = useState(1);
+  const [values, setValues] =
+    useState<ShippingAddress>(EMPTY_ADDRESS);
+  const [errors, setErrors] =
+    useState<FieldErrors<ShippingAddress>>({});
   const [submitError, setSubmitError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
@@ -103,31 +119,49 @@ export function CheckoutForm({ directBike }: CheckoutFormProps) {
   );
 
   const onChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    event: ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement
+    >,
   ) => {
     const { name, value } = event.target;
-    setValues((current) => ({ ...current, [name]: value }));
-    setErrors((current) => ({ ...current, [name]: undefined }));
+
+    setValues((current) => ({
+      ...current,
+      [name]: value,
+    }));
+
+    setErrors((current) => ({
+      ...current,
+      [name]: undefined,
+    }));
   };
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
+
     if (submitting) return;
 
     const nextErrors = validate(values);
+
     setErrors(nextErrors);
+
     if (hasErrors(nextErrors)) return;
 
     setSubmitting(true);
     setSubmitError("");
 
     const shippingAddress = trimAddress(values);
+
     const placed: {
       line: CheckoutLine;
       order: PlacedOrder;
       message: string;
     }[] = [];
-    let failure: { line: CheckoutLine; reason: string } | null = null;
+
+    let failure: {
+      line: CheckoutLine;
+      reason: string;
+    } | null = null;
 
     for (const line of lines) {
       try {
@@ -136,29 +170,49 @@ export function CheckoutForm({ directBike }: CheckoutFormProps) {
           quantity: line.quantity,
           shippingAddress,
         });
-        placed.push({ line, order, message });
+
+        placed.push({
+          line,
+          order,
+          message,
+        });
       } catch (error) {
-        failure = { line, reason: errorMessage(error, RATE_LIMIT_MESSAGE) };
+        failure = {
+          line,
+          reason: errorMessage(
+            error,
+            RATE_LIMIT_MESSAGE,
+          ),
+        };
+
         break;
       }
     }
 
     if (placed.length === 0) {
       setSubmitError(
-        failure?.reason ?? "Something went wrong. Please try again.",
+        failure?.reason ??
+          "Something went wrong. Please try again.",
       );
+
       setSubmitting(false);
       return;
     }
 
-    const placedIds = new Set(placed.map(({ line }) => line.bikeId));
+    const placedIds = new Set(
+      placed.map(({ line }) => line.bikeId),
+    );
+
     const failed = failure;
+
     const result: CheckoutResult = {
       message: placed[0].message,
       orders: placed.map(({ order }) => order),
       failed: failed
         ? lines
-            .filter((line) => !placedIds.has(line.bikeId))
+            .filter(
+              (line) => !placedIds.has(line.bikeId),
+            )
             .map((line) => ({
               name: line.name,
               reason:
@@ -170,14 +224,18 @@ export function CheckoutForm({ directBike }: CheckoutFormProps) {
     };
 
     saveCheckoutResult(result);
-    if (!directBike) cart.remove([...placedIds]);
+
+    if (!directBike) {
+      cart.remove([...placedIds]);
+    }
+
     router.push("/order-placed");
   };
 
   if (!directBike && !hydrated) {
     return (
       <div
-        className="h-96 animate-pulse rounded-2xl border border-line bg-ink-900"
+        className="h-96 animate-pulse rounded-2xl border border-[#1d2b38] bg-[#0a141e]"
         aria-busy="true"
       />
     );
@@ -190,7 +248,10 @@ export function CheckoutForm({ directBike }: CheckoutFormProps) {
         title="Your cart is empty"
         description="Add a vehicle to your cart before checking out."
         action={
-          <Link href="/vehicles" className={buttonPrimary}>
+          <Link
+            href="/vehicles"
+            className="inline-flex items-center justify-center rounded-lg bg-[#FF8A00] px-5 py-3 font-semibold text-white transition-colors hover:bg-[#e67a00]"
+          >
             Browse Vehicles
           </Link>
         }
@@ -198,22 +259,34 @@ export function CheckoutForm({ directBike }: CheckoutFormProps) {
     );
   }
 
-  const fieldProps = (name: keyof ShippingAddress) => ({
+  const fieldProps = (
+    name: keyof ShippingAddress,
+  ) => ({
     id: name,
     name,
     value: values[name],
     onChange,
     "aria-invalid": Boolean(errors[name]),
-    "aria-describedby": errors[name] ? `${name}-error` : undefined,
+    "aria-describedby": errors[name]
+      ? `${name}-error`
+      : undefined,
     className: input,
   });
 
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
-      <form onSubmit={onSubmit} noValidate className="space-y-5">
-        <h2 className="text-xl font-semibold text-white">Shipping Details</h2>
+      <form
+        onSubmit={onSubmit}
+        noValidate
+        className="space-y-5"
+      >
+        <h2 className="text-xl font-semibold text-[#0057D9]">
+          Shipping Details
+        </h2>
 
-        {submitError && <Alert tone="error">{submitError}</Alert>}
+        {submitError && (
+          <Alert tone="error">{submitError}</Alert>
+        )}
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <Field
@@ -229,6 +302,7 @@ export function CheckoutForm({ directBike }: CheckoutFormProps) {
               placeholder="Enter your name"
             />
           </Field>
+
           <Field
             label="Phone Number"
             htmlFor="phoneNumber"
@@ -262,7 +336,12 @@ export function CheckoutForm({ directBike }: CheckoutFormProps) {
         </Field>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <Field label="City" htmlFor="city" error={errors.city} required>
+          <Field
+            label="City"
+            htmlFor="city"
+            error={errors.city}
+            required
+          >
             <input
               {...fieldProps("city")}
               autoComplete="address-level2"
@@ -270,6 +349,7 @@ export function CheckoutForm({ directBike }: CheckoutFormProps) {
               placeholder="Enter your city"
             />
           </Field>
+
           <Field
             label="Postal Code"
             htmlFor="postalCode"
@@ -287,36 +367,50 @@ export function CheckoutForm({ directBike }: CheckoutFormProps) {
         </div>
 
         <fieldset className="pt-2">
-          <legend className="mb-4 text-xl font-semibold text-white">
+          <legend className="mb-4 text-xl font-semibold text-[#0057D9]">
             Payment Method
           </legend>
+
           <div className="space-y-3">
-            <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-brand/40 bg-ink-900 p-4">
+            <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-[#FF8A00]/50 bg-[#0a141e] p-4">
               <input
                 type="radio"
                 name="payment"
                 defaultChecked
-                className="mt-1 accent-brand"
+                className="mt-1 accent-[#FF8A00]"
               />
+
               <span>
                 <span className="block text-sm font-medium text-white">
                   Cash on Delivery
                 </span>
+
                 <span className="text-xs text-gray-400">
                   Pay when you receive the order
                 </span>
               </span>
             </label>
-            {["JazzCash / Easypaisa", "Bank Transfer"].map((method) => (
+
+            {[
+              "JazzCash / Easypaisa",
+              "Bank Transfer",
+            ].map((method) => (
               <label
                 key={method}
-                className="flex cursor-not-allowed items-start gap-3 rounded-xl border border-line bg-ink-900 p-4 opacity-50"
+                className="flex cursor-not-allowed items-start gap-3 rounded-xl border border-[#1d2b38] bg-[#0a141e] p-4 opacity-50"
               >
-                <input type="radio" name="payment" disabled className="mt-1" />
+                <input
+                  type="radio"
+                  name="payment"
+                  disabled
+                  className="mt-1"
+                />
+
                 <span>
                   <span className="block text-sm font-medium text-white">
                     {method}
                   </span>
+
                   <span className="text-xs text-gray-400">
                     Currently unavailable
                   </span>
@@ -329,7 +423,7 @@ export function CheckoutForm({ directBike }: CheckoutFormProps) {
         <button
           type="submit"
           disabled={submitting}
-          className={cn(buttonPrimary, "w-full py-3.5")}
+          className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#FF8A00] py-3.5 font-semibold text-white transition-colors hover:bg-[#e67a00] disabled:cursor-not-allowed disabled:opacity-60"
         >
           {submitting ? (
             <>
@@ -345,11 +439,17 @@ export function CheckoutForm({ directBike }: CheckoutFormProps) {
         </button>
       </form>
 
-      <aside className="h-fit rounded-xl border border-white/10 bg-ink-900 p-5 lg:sticky lg:top-24">
-        <h2 className="text-lg font-semibold text-white">Order Summary</h2>
+      <aside className="h-fit rounded-xl border border-[#1d2b38] bg-[#0a141e] p-5 lg:sticky lg:top-24">
+        <h2 className="text-lg font-semibold text-[#0057D9]">
+          Order Summary
+        </h2>
+
         <ul className="mt-5 space-y-4">
           {lines.map((line) => (
-            <li key={line.bikeId} className="flex gap-3">
+            <li
+              key={line.bikeId}
+              className="flex gap-3"
+            >
               <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-white">
                 <ProductImage
                   src={line.imageUrl}
@@ -358,11 +458,16 @@ export function CheckoutForm({ directBike }: CheckoutFormProps) {
                   className="p-1"
                 />
               </div>
+
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium text-white">
                   {line.name}
                 </p>
-                <p className="text-xs text-gray-400">{formatPKR(line.price)}</p>
+
+                <p className="text-xs text-gray-400">
+                  {formatPKR(line.price)}
+                </p>
+
                 {directBike ? (
                   <div className="mt-2">
                     <QuantityStepper
@@ -380,15 +485,20 @@ export function CheckoutForm({ directBike }: CheckoutFormProps) {
             </li>
           ))}
         </ul>
+
         <div className="mt-5 flex items-center justify-between border-t border-white/10 pt-4">
-          <span className="font-medium text-white">Estimated total</span>
-          <span className="text-lg font-semibold text-brand">
+          <span className="font-medium text-white">
+            Estimated total
+          </span>
+
+          <span className="text-lg font-semibold text-[#FF8A00]">
             {formatPKR(total)}
           </span>
         </div>
-        <p className="mt-3 text-xs leading-5 text-faint">
-          The final amount is confirmed by our team when we call you. Payment is
-          collected on delivery.
+
+        <p className="mt-3 text-xs leading-5 text-gray-500">
+          The final amount is confirmed by our team when we call
+          you. Payment is collected on delivery.
         </p>
       </aside>
     </div>

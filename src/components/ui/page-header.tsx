@@ -18,7 +18,7 @@ export function PageHeader({
     <Reveal className="mb-8 flex flex-col justify-between gap-5 lg:mb-10 lg:flex-row lg:items-end">
       <div>
         {eyebrow && (
-          <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-brand">
+          <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-[#0057D9]">
             {eyebrow}
           </p>
         )}

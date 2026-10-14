@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { BadgeCheck, Headphones, ShieldCheck, Truck } from "lucide-react";
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from "react-icons/fa";
@@ -63,19 +64,31 @@ export async function Footer() {
       <div className="mx-auto w-full max-w-7xl px-4 pt-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 pb-10 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 xl:gap-8">
           <div className="sm:col-span-2 lg:col-span-4 xl:col-span-2">
+            {/* EVINN Logo */}
             <Link
               href="/"
-              className="text-2xl font-extrabold tracking-wide text-white"
+              className="relative flex h-12 w-36 items-center"
+              aria-label="EVINN home"
             >
-              EV<span className="text-brand">INN</span>
+              <Image
+                src="/evinn-logo.png"
+                alt="EVINN"
+                width={150}
+                height={52}
+                priority
+                className="h-auto max-h-12 w-auto object-contain object-left"
+              />
             </Link>
-            <p className="mt-1 mb-3 text-xs font-semibold uppercase tracking-wider text-brand">
+
+            <p className="mt-1 mb-3 text-xs font-semibold uppercase tracking-wider text-[#0057D9]">
               {SITE.tagline}
             </p>
+
             <p className="mb-5 max-w-sm text-sm leading-6">
               Pakistan&apos;s trusted platform for electric bikes and scooters.
               Discover, compare, and choose the future of mobility.
             </p>
+
             <ul className="flex gap-2">
               {SOCIAL_LINKS.map(({ icon: Icon, href, label }) => (
                 <li key={label}>
@@ -84,7 +97,7 @@ export async function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={label}
-                    className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-gray-300 transition-colors hover:border-brand/50 hover:text-brand"
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-gray-300 transition-colors hover:border-[#0057D9]/50 hover:text-[#0057D9]"
                   >
                     <Icon aria-hidden />
                   </a>
@@ -94,8 +107,11 @@ export async function Footer() {
           </div>
 
           <FooterColumn title="Shop" links={SHOP_LINKS} />
+
           <FooterColumn title="Services" links={SERVICE_LINKS} />
+
           <FooterColumn title="Information" links={INFO_LINKS} />
+
           {brands.length > 0 && (
             <FooterColumn
               title="Popular Brands"
@@ -113,7 +129,8 @@ export async function Footer() {
               key={title}
               className="flex items-center gap-3 rounded-lg border border-white/10 px-3 py-3"
             >
-              <Icon className="h-5 w-5 shrink-0 text-brand" aria-hidden />
+              <Icon className="h-5 w-5 shrink-0 text-[#0057D9]" aria-hidden />
+
               <span className="text-xs">
                 <span className="block font-medium text-gray-300">{title}</span>
                 {sub}
@@ -123,18 +140,27 @@ export async function Footer() {
         </ul>
 
         <div className="flex flex-col gap-3 border-t border-white/10 py-5 text-center text-xs sm:text-sm lg:flex-row lg:items-center lg:justify-between lg:text-left">
-          <p>
+          <p className="flex items-center justify-center gap-2 lg:justify-start">
             © {new Date().getFullYear()}{" "}
-            <span className="font-semibold text-white">
-              EV<span className="text-brand">INN</span>
+            <span className="inline-flex h-7 w-20 items-center">
+              <Image
+                src="/evinn-logo.png"
+                alt="EVINN"
+                width={100}
+                height={35}
+                className="h-auto max-h-7 w-auto object-contain"
+              />
             </span>
             . All Rights Reserved.
           </p>
+
           <p>
-            <a href={`mailto:${SITE.email}`} className="hover:text-brand">
+            <a href={`mailto:${SITE.email}`} className="hover:text-[#0057D9]">
               {SITE.email}
             </a>
+
             <span className="mx-2">·</span>
+
             {SITE.address}
           </p>
         </div>
@@ -152,15 +178,16 @@ function FooterColumn({
 }) {
   return (
     <nav aria-label={title}>
-      <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-brand">
+      <h2 className="mb-4 text-sm font-bold uppercase tracking-wide text-[#0057D9]">
         {title}
       </h2>
+
       <ul className="flex flex-col gap-2.5">
         {links.map((link) => (
           <li key={link.href}>
             <Link
               href={link.href}
-              className="text-sm transition-colors hover:text-brand"
+              className="text-sm transition-colors hover:text-[#0057D9]"
             >
               {link.label}
             </Link>

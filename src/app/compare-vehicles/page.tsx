@@ -41,10 +41,17 @@ export default async function CompareVehiclesPage({
 
   return (
     <div className={`${container} py-10 lg:py-14`}>
-      <PageHeader
-        title="Compare Vehicles"
-        description="Pick up to three electric bikes or scooters and compare them side by side."
-      />
+      <div className="[&_.page-header-title]:text-white [&_.page-header-description]:text-gray-400">
+        <PageHeader
+          title={
+            <>
+              <span className="text-[#0057D9]">Compare</span>{" "}
+              <span className="text-[#FF8A00]">Vehicles</span>
+            </>
+          }
+          description="Pick up to three electric bikes or scooters and compare them side by side."
+        />
+      </div>
 
       {result.error ? (
         <EmptyState
@@ -62,7 +69,10 @@ export default async function CompareVehiclesPage({
         <CompareVehicles
           key={firstParam(query.bikes) ?? ""}
           bikes={result.bikes}
-          initialIds={initialSelection(result.bikes, firstParam(query.bikes))}
+          initialIds={initialSelection(
+            result.bikes,
+            firstParam(query.bikes),
+          )}
         />
       )}
     </div>

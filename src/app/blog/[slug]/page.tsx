@@ -16,6 +16,7 @@ export async function generateMetadata({
 }: PageProps<"/blog/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const post = posts.find((item) => item.slug === slug);
+
   if (!post) return {};
 
   return {
@@ -34,30 +35,37 @@ export default async function BlogPostPage({
 }: PageProps<"/blog/[slug]">) {
   const { slug } = await params;
   const post = posts.find((item) => item.slug === slug);
+
   if (!post) notFound();
 
-  const related = posts.filter((item) => item.slug !== post.slug).slice(0, 3);
+  const related = posts
+    .filter((item) => item.slug !== post.slug)
+    .slice(0, 3);
 
   return (
     <>
       <article className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
         <Link
           href="/blog"
-          className="inline-flex items-center gap-1.5 text-sm text-brand hover:underline"
+          className="inline-flex items-center gap-1.5 text-sm text-[#FF8A00] transition-colors hover:text-[#FF9F2D] hover:underline"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to all articles
         </Link>
-        <p className="mt-6 text-xs font-semibold uppercase tracking-wider text-brand">
+
+        <p className="mt-6 text-xs font-semibold uppercase tracking-wider text-[#FF8A00]">
           {post.tag}
         </p>
+
         <h1 className="mt-2 text-3xl font-bold text-white sm:text-4xl">
           {post.title}
         </h1>
-        <p className="mt-2 text-gray-400">
+
+        <p className="mt-2 text-[#9AA6B2]">
           <time>{post.date}</time>
         </p>
-        <div className="relative mt-6 h-72 w-full overflow-hidden rounded-2xl sm:h-96">
+
+        <div className="relative mt-6 h-72 w-full overflow-hidden rounded-2xl border border-[#263541] bg-[#0D1720] sm:h-96">
           <Image
             src={post.image}
             alt=""
@@ -67,7 +75,8 @@ export default async function BlogPostPage({
             className="object-cover"
           />
         </div>
-        <div className="mt-8 space-y-4 leading-relaxed text-gray-300">
+
+        <div className="mt-8 space-y-4 leading-relaxed text-[#C0C8D0]">
           {post.content.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
@@ -79,12 +88,13 @@ export default async function BlogPostPage({
           <h2 className="mb-6 text-2xl font-bold text-white">
             Related Articles
           </h2>
+
           <ul className="grid gap-6 sm:grid-cols-3">
             {related.map((item) => (
               <li key={item.slug}>
                 <Link
                   href={`/blog/${item.slug}`}
-                  className="block overflow-hidden rounded-xl border border-white/5 bg-[#12181f] transition-colors hover:border-brand/40"
+                  className="block overflow-hidden rounded-xl border border-[#263541] bg-[#0D1720] transition-colors hover:border-[#FF8A00]/60"
                 >
                   <div className="relative h-32 w-full">
                     <Image
@@ -95,11 +105,15 @@ export default async function BlogPostPage({
                       className="object-cover"
                     />
                   </div>
+
                   <div className="p-3">
                     <p className="text-sm font-medium text-white">
                       {item.title}
                     </p>
-                    <p className="mt-1 text-xs text-gray-400">{item.date}</p>
+
+                    <p className="mt-1 text-xs text-[#9AA6B2]">
+                      {item.date}
+                    </p>
                   </div>
                 </Link>
               </li>

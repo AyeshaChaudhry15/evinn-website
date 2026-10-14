@@ -14,11 +14,22 @@ export default async function VehiclesPage({
 }: PageProps<"/vehicles">) {
   return (
     <div className={`${container} py-10 lg:py-14`}>
-      <PageHeader
-        title="All Electric Vehicles"
-        description="Explore our wide range of electric bikes and scooters from top brands."
+      <div className="[&_.page-header-title]:text-white [&_.page-header-description]:text-gray-400">
+        <PageHeader
+          title={
+            <>
+              <span className="text-[#0057D9]">All Electric</span>{" "}
+              <span className="text-[#FF8A00]">Vehicles</span>
+            </>
+          }
+          description="Explore our wide range of electric bikes and scooters from top brands."
+        />
+      </div>
+
+      <BikeCatalog
+        pathname="/vehicles"
+        searchParams={await searchParams}
       />
-      <BikeCatalog pathname="/vehicles" searchParams={await searchParams} />
     </div>
   );
 }

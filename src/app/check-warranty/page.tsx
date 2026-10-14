@@ -22,7 +22,7 @@ export default async function CheckWarrantyPage() {
     <section className="mx-auto max-w-3xl px-4 py-14 sm:px-6 sm:py-20">
       <Link
         href="/warranty"
-        className="inline-flex items-center gap-1.5 text-sm text-brand hover:underline"
+        className="inline-flex items-center gap-1.5 text-sm text-[#0057D9] transition-colors hover:text-[#FF8A00] hover:underline"
       >
         <ArrowLeft className="h-4 w-4" />
         Warranty information
@@ -30,14 +30,16 @@ export default async function CheckWarrantyPage() {
 
       <div className="mt-6 mb-3 flex items-center gap-3">
         <ShieldCheck
-          className="h-8 w-8 text-brand"
+          className="h-8 w-8 text-[#0057D9]"
           strokeWidth={1.5}
           aria-hidden
         />
+
         <h1 className="text-3xl font-bold text-white sm:text-4xl">
           Check Warranty for Your Model
         </h1>
       </div>
+
       <p className="mb-8 text-base text-gray-400 sm:text-lg">
         Select your model to check its warranty coverage and details.
       </p>

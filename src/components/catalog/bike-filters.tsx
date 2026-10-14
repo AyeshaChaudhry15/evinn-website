@@ -204,10 +204,10 @@ export function BikeFilters({
           aria-controls="bike-filters"
           className="flex items-center gap-2 text-lg font-semibold text-white lg:pointer-events-none"
         >
-          <SlidersHorizontal className="h-5 w-5 text-brand" />
+          <SlidersHorizontal className="h-5 w-5 text-[#0057D9]" />
           Filters
           {activeCount > 0 && (
-            <span className="rounded-full bg-brand px-2 py-0.5 text-xs font-bold text-ink-950">
+            <span className="rounded-full bg-[#0057D9] px-2 py-0.5 text-xs font-bold text-ink-950">
               {activeCount}
             </span>
           )}
@@ -294,7 +294,7 @@ export function BikeFilters({
                     type="checkbox"
                     checked={filters.brands.includes(brand._id)}
                     onChange={() => toggleBrand(brand._id)}
-                    className="h-4 w-4 accent-brand"
+                    className="h-4 w-4 "
                   />
                   {brand.displayName}
                 </label>
@@ -317,7 +317,7 @@ export function BikeFilters({
           <div className="relative h-6">
             <div className="absolute inset-x-1 top-2 h-1.5 rounded-full bg-ink-800" />
             <div
-              className="absolute top-2 left-(--from) right-(--to) h-1.5 rounded-full bg-brand"
+              className="absolute top-2 left-(--from) right-(--to) h-1.5 rounded-full bg-[#FF8A00]"
               style={
                 {
                   "--from": `${(minPriceDraft / PRICE_SLIDER.max) * 100}%`,

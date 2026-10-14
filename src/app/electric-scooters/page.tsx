@@ -13,17 +13,25 @@ export default async function ElectricScootersPage({
   searchParams,
 }: PageProps<"/electric-scooters">) {
   return (
-    <div className={`${container} py-10 lg:py-14`}>
-      <PageHeader
-        title="Electric Scooters"
-        description="Smart, stylish and sustainable scooters for everyday city riding."
-      />
-      <BikeCatalog
-        pathname="/electric-scooters"
-        searchParams={await searchParams}
-        type="scooter"
-        noun="scooters"
-      />
+    <div className="min-h-screen w-full bg-[#06111F]">
+      <div className={`${container} py-10 lg:py-14`}>
+        <PageHeader
+          title={
+            <>
+              <span className="text-[#0057D9]">Electric</span>{" "}
+              <span className="text-[#FF8A00]">Scooters</span>
+            </>
+          }
+          description="Smart, stylish and sustainable electric scooters for everyday city riding."
+        />
+
+        <BikeCatalog
+          pathname="/electric-scooters"
+          searchParams={await searchParams}
+          type="scooter"
+          noun="scooters"
+        />
+      </div>
     </div>
   );
 }

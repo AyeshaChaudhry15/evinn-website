@@ -15,6 +15,7 @@ export function CartView() {
   const items = useCart();
 
   const totalItems = items.reduce((total, item) => total + item.quantity, 0);
+
   const subtotal = items.reduce(
     (total, item) => total + item.price * item.quantity,
     0,
@@ -23,12 +24,15 @@ export function CartView() {
   return (
     <>
       <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
-        <h1 className="text-2xl font-semibold text-white sm:text-3xl">
-          Your Cart{hydrated && ` (${totalItems})`}
+        <h1 className="text-2xl font-semibold sm:text-3xl">
+          <span className="text-[#0057D9]">Your</span>{" "}
+          <span className="text-[#FF8A00]">Cart</span>
+          {hydrated && ` (${totalItems})`}
         </h1>
+
         <Link
           href="/vehicles"
-          className="flex items-center gap-2 text-sm text-gray-300 transition-colors hover:text-brand"
+          className="flex items-center gap-2 text-sm text-gray-300 transition-colors hover:text-[#FF8A00]"
         >
           <ArrowLeft className="h-4 w-4" />
           Continue Shopping
@@ -37,16 +41,19 @@ export function CartView() {
 
       {!hydrated ? (
         <div
-          className="h-72 animate-pulse rounded-2xl border border-line bg-ink-900"
+          className="h-72 animate-pulse rounded-2xl border border-[#1d2b38] bg-[#0a141e]"
           aria-busy="true"
         />
       ) : items.length === 0 ? (
         <EmptyState
-          icon={<ShoppingBag className="h-7 w-7" />}
+          icon={<ShoppingBag className="h-7 w-7 text-[#FF8A00]" />}
           title="Your cart is empty"
           description="Looks like you haven't added any vehicles yet."
           action={
-            <Link href="/vehicles" className={buttonPrimary}>
+            <Link
+              href="/vehicles"
+              className={`${buttonPrimary} !bg-[#FF8A00] !text-[#06111F] hover:!bg-[#e67a00]`}
+            >
               Start Shopping
             </Link>
           }
@@ -57,7 +64,7 @@ export function CartView() {
             {items.map((item) => (
               <li
                 key={item.bikeId}
-                className="rounded-xl border border-white/10 bg-ink-900 p-4"
+                className="rounded-xl border border-[#1d2b38] bg-[#0a141e] p-4 transition-colors hover:border-[#0057D9]/50"
               >
                 <div className="flex gap-4">
                   <Link
@@ -79,19 +86,22 @@ export function CartView() {
                       <div className="min-w-0">
                         <Link
                           href={`/bikes/${item.slug}`}
-                          className="font-medium text-white hover:text-brand"
+                          className="font-medium text-white transition-colors hover:text-[#0057D9]"
                         >
                           {item.name}
                         </Link>
+
                         {item.brandName && (
-                          <p className="mt-1 text-xs text-faint">
+                          <p className="mt-1 text-xs text-gray-500">
                             {item.brandName}
                           </p>
                         )}
+
                         <p className="mt-2 text-sm text-gray-300">
                           {formatPKR(item.price)}
                         </p>
                       </div>
+
                       <p className="hidden text-sm font-medium text-gray-300 sm:block">
                         {formatPKR(item.price * item.quantity)}
                       </p>
@@ -106,15 +116,17 @@ export function CartView() {
                           }
                           label={`Quantity of ${item.name}`}
                         />
+
                         <button
                           type="button"
                           onClick={() => cart.remove(item.bikeId)}
                           aria-label={`Remove ${item.name}`}
-                          className="flex h-9 w-9 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-red-500/10 hover:text-red-400"
+                          className="flex h-9 w-9 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-[#FF8A00]/10 hover:text-[#FF8A00]"
                         >
                           <Trash2 className="h-4 w-4" />
                         </button>
                       </div>
+
                       <p className="text-sm font-medium text-gray-300 sm:hidden">
                         {formatPKR(item.price * item.quantity)}
                       </p>
@@ -125,8 +137,12 @@ export function CartView() {
             ))}
           </ul>
 
-          <aside className="h-fit rounded-xl border border-white/10 bg-ink-900 p-5 lg:sticky lg:top-24">
-            <h2 className="text-lg font-semibold text-white">Order Summary</h2>
+          <aside className="h-fit rounded-xl border border-[#1d2b38] bg-[#0a141e] p-5 lg:sticky lg:top-24">
+            <h2 className="text-lg font-semibold">
+              <span className="text-[#0057D9]">Order</span>{" "}
+              <span className="text-[#FF8A00]">Summary</span>
+            </h2>
+
             <dl className="mt-5 space-y-4 text-sm">
               <div className="flex items-center justify-between">
                 <dt className="text-gray-400">Subtotal</dt>
@@ -134,25 +150,31 @@ export function CartView() {
                   {formatPKR(subtotal)}
                 </dd>
               </div>
-              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+
+              <div className="flex items-center justify-between border-b border-[#1d2b38] pb-4">
                 <dt className="text-gray-400">Payment</dt>
-                <dd className="font-medium text-brand">Cash on Delivery</dd>
+                <dd className="font-medium text-[#FF8A00]">
+                  Cash on Delivery
+                </dd>
               </div>
+
               <div className="flex items-center justify-between">
                 <dt className="text-base font-medium text-white">Total</dt>
-                <dd className="text-xl font-semibold text-white">
+                <dd className="text-xl font-semibold text-[#0057D9]">
                   {formatPKR(subtotal)}
                 </dd>
               </div>
             </dl>
-            <p className="mt-4 text-xs leading-5 text-faint">
+
+            <p className="mt-4 text-xs leading-5 text-gray-500">
               Each vehicle is placed as its own order (up to {MAX_QUANTITY}{" "}
               units each) at its current price. We&apos;ll call you to confirm
               before delivery.
             </p>
+
             <Link
               href="/checkout"
-              className={`${buttonPrimary} mt-6 w-full py-3.5`}
+              className={`${buttonPrimary} mt-6 w-full !bg-[#FF8A00] !text-[#06111F] hover:!bg-[#e67a00] py-3.5`}
             >
               Proceed to Checkout
               <ArrowRight className="h-4 w-4" />

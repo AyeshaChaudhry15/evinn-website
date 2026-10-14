@@ -26,7 +26,7 @@ export function Field({
         className="mb-1.5 block text-xs font-medium text-soft"
       >
         {label}
-        {required && <span className="ml-0.5 text-brand">*</span>}
+        {required && <span className="ml-0.5 text-[#0057D9]">*</span>}
       </label>
       {children}
       {error ? (

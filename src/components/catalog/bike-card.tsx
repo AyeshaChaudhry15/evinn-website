@@ -9,7 +9,7 @@ export function BikeCard({ bike }: { bike: Bike }) {
   const href = `/bikes/${bike.slug}`;
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-line bg-ink-900 transition duration-300 hover:-translate-y-1 hover:border-line-strong hover:shadow-[0_14px_35px_rgba(0,0,0,0.3)]">
+    <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-[#1d2b38] bg-[#0a141e] transition duration-300 hover:-translate-y-1 hover:border-[#0057D9]/50 hover:shadow-[0_14px_35px_rgba(0,87,217,0.15)]">
       <Link
         href={href}
         className="relative block h-52 bg-white"
@@ -25,26 +25,31 @@ export function BikeCard({ bike }: { bike: Bike }) {
       </Link>
 
       <div className="flex flex-1 flex-col p-4">
-        <p className="text-xs text-faint">
+        <p className="text-xs text-gray-500">
           {bike.brand?.displayName ?? "EVINN"} · {capitalize(bike.type)}
         </p>
 
-        <h3 className="mt-1 truncate text-[15px] font-semibold text-fg">
-          <Link href={href} className="transition-colors hover:text-brand">
+        <h3 className="mt-1 truncate text-[15px] font-semibold text-white">
+          <Link
+            href={href}
+            className="transition-colors hover:text-[#0057D9]"
+          >
             {bike.name}
           </Link>
         </h3>
 
         <div className="mt-2 mb-4 flex items-center justify-between gap-3">
-          <p className="text-sm font-bold text-brand-soft">
+          <p className="text-sm font-bold text-[#FF8A00]">
             {formatPKR(bike.price)}
           </p>
+
           {bike.rating > 0 && (
-            <p className="flex items-center gap-1 text-xs text-muted">
+            <p className="flex items-center gap-1 text-xs text-gray-400">
               <Star
-                className="h-3.5 w-3.5 fill-brand-soft text-brand-soft"
+                className="h-3.5 w-3.5 fill-[#FF8A00] text-[#FF8A00]"
                 aria-hidden
               />
+
               <span>
                 {bike.rating}
                 <span className="sr-only"> out of 5</span>
@@ -53,7 +58,10 @@ export function BikeCard({ bike }: { bike: Bike }) {
           )}
         </div>
 
-        <AddToCartButton bike={bike} className="mt-auto h-10 w-full" />
+        <AddToCartButton
+          bike={bike}
+          className="mt-auto h-10 w-full"
+        />
       </div>
     </article>
   );

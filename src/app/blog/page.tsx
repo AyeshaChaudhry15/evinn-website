@@ -13,13 +13,25 @@ export const metadata: Metadata = {
 export default function BlogPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
-      <PageHeader
-        title="Blog & News"
-        description="Stay updated with the latest in EV world."
-      />
+      <div className="[&_.page-header-title]:text-white [&_.page-header-description]:text-gray-400">
+        <PageHeader
+          title={
+            <>
+              <span className="text-[#0057D9]">Blog</span>{" "}
+              <span className="text-[#FF8A00]">&amp; News</span>
+            </>
+          }
+          description="Stay updated with the latest in EV world."
+        />
+      </div>
+
       <ul className="grid grid-cols-1 gap-8 sm:grid-cols-2">
         {posts.map((post, index) => (
-          <Reveal key={post.slug} as="li" delay={Math.min(index, 3) * 0.06}>
+          <Reveal
+            key={post.slug}
+            as="li"
+            delay={Math.min(index, 3) * 0.06}
+          >
             <BlogCard post={post} />
           </Reveal>
         ))}

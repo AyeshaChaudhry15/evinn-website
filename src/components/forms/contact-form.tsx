@@ -47,15 +47,18 @@ export function ContactForm({
     reason: initialReason,
     message: "",
   };
+
   const [values, setValues] = useState<ContactValues>({
     ...emptyValues,
     message: initialMessage,
   });
+
   const [errors, setErrors] = useState<FieldErrors<ContactValues>>({});
   const [status, setStatus] = useState<{
     tone: "success" | "error";
     text: string;
   } | null>(null);
+
   const [submitting, setSubmitting] = useState(false);
 
   const onChange = (
@@ -64,6 +67,7 @@ export function ContactForm({
     >,
   ) => {
     const { name, value } = event.target;
+
     setValues((current) => ({ ...current, [name]: value }));
     setErrors((current) => ({ ...current, [name]: undefined }));
     setStatus(null);
@@ -74,7 +78,9 @@ export function ContactForm({
     if (submitting) return;
 
     const nextErrors = validate(values);
+
     setErrors(nextErrors);
+
     if (hasErrors(nextErrors)) return;
 
     setSubmitting(true);
@@ -87,6 +93,7 @@ export function ContactForm({
         reason: values.reason,
         message: values.message.trim(),
       });
+
       setStatus({ tone: "success", text: message });
       setValues(emptyValues);
     } catch (error) {
@@ -119,7 +126,10 @@ export function ContactForm({
           maxLength={100}
           aria-invalid={Boolean(errors.fullName)}
           aria-describedby={describedBy("fullName")}
-          className={input}
+          className={cn(
+            input,
+            "border-[#1d2b38] bg-[#0a141e] text-white placeholder:text-gray-500 focus:border-[#0057D9] focus:ring-[#0057D9]/30",
+          )}
         />
       </Field>
 
@@ -139,7 +149,10 @@ export function ContactForm({
           maxLength={254}
           aria-invalid={Boolean(errors.email)}
           aria-describedby={describedBy("email")}
-          className={input}
+          className={cn(
+            input,
+            "border-[#1d2b38] bg-[#0a141e] text-white placeholder:text-gray-500 focus:border-[#0057D9] focus:ring-[#0057D9]/30",
+          )}
         />
       </Field>
 
@@ -150,7 +163,10 @@ export function ContactForm({
             name="reason"
             value={values.reason}
             onChange={onChange}
-            className={select}
+            className={cn(
+              select,
+              "border-[#1d2b38] bg-[#0a141e] text-white focus:border-[#0057D9] focus:ring-[#0057D9]/30",
+            )}
           >
             {CONTACT_REASONS.map((reason) => (
               <option key={reason} value={reason}>
@@ -158,7 +174,8 @@ export function ContactForm({
               </option>
             ))}
           </select>
-          <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
+
+          <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#FF8A00]" />
         </div>
       </Field>
 
@@ -177,7 +194,10 @@ export function ContactForm({
           maxLength={5000}
           aria-invalid={Boolean(errors.message)}
           aria-describedby={describedBy("message")}
-          className={cn(input, "resize-none")}
+          className={cn(
+            input,
+            "resize-none border-[#1d2b38] bg-[#0a141e] text-white placeholder:text-gray-500 focus:border-[#0057D9] focus:ring-[#0057D9]/30",
+          )}
         />
       </Field>
 
@@ -186,7 +206,10 @@ export function ContactForm({
       <button
         type="submit"
         disabled={submitting}
-        className={cn(buttonPrimary, "w-full")}
+        className={cn(
+          buttonPrimary,
+          "w-full !bg-[#FF8A00] text-white hover:!bg-[#e67b00] disabled:cursor-not-allowed disabled:opacity-60",
+        )}
       >
         {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
         {submitting ? "Sending…" : "Send Message"}

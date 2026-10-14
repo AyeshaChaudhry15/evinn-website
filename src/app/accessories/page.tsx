@@ -11,6 +11,9 @@ export default async function AccessoriesPage({
   searchParams,
 }: PageProps<"/accessories">) {
   return (
-    <ProductCatalog kind="accessories" searchParams={await searchParams} />
+    <ProductCatalog
+      kind="accessories"
+      searchParams={await searchParams}
+    />
   );
 }

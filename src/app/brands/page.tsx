@@ -20,12 +20,27 @@ export default async function BrandsPage() {
 
   return (
     <div className={`${container} py-10 lg:py-14`}>
-      <PageHeader title="All Brands" description="Explore the electric vehicle brands in one place." />
+      <PageHeader
+        title={
+          <>
+            <span className="text-[#0057D9]">All</span>{" "}
+            <span className="text-[#FF8A00]">Brands</span>
+          </>
+        }
+        description="Explore the electric vehicle brands in one place."
+      />
 
       {result.error ? (
-        <EmptyState tone="error" title="We couldn't load brands" description={result.error} />
+        <EmptyState
+          tone="error"
+          title="We couldn't load brands"
+          description={result.error}
+        />
       ) : result.brands.length === 0 ? (
-        <EmptyState icon={<Building2 className="h-7 w-7" />} title="No brands yet" />
+        <EmptyState
+          icon={<Building2 className="h-7 w-7" />}
+          title="No brands yet"
+        />
       ) : (
         <BrandGrid brands={result.brands} />
       )}
