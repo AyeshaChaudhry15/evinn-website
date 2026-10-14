@@ -40,7 +40,10 @@ const SEARCH_DEBOUNCE_MS = 350;
 const asParam = (value: number | undefined) =>
   value === undefined ? undefined : String(value);
 
-function toParams(filters: Filters, showTypeFilter: boolean): ParamOverrides {
+function toParams(
+  filters: Filters,
+  showTypeFilter: boolean,
+): ParamOverrides {
   return {
     search: filters.search || undefined,
     brand: filters.brands.length ? filters.brands.join(",") : undefined,
@@ -54,7 +57,11 @@ function toParams(filters: Filters, showTypeFilter: boolean): ParamOverrides {
   };
 }
 
-function optionIndex(options: RangeOption[], min?: number, max?: number) {
+function optionIndex(
+  options: RangeOption[],
+  min?: number,
+  max?: number,
+) {
   return options.findIndex(
     (option) => option.min === min && option.max === max,
   );
@@ -62,8 +69,8 @@ function optionIndex(options: RangeOption[], min?: number, max?: number) {
 
 const rangeThumb =
   "pointer-events-none absolute inset-x-0 top-0 h-6 w-full appearance-none bg-transparent " +
-  "[&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:h-[18px] [&::-webkit-slider-thumb]:w-[18px] [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-brand [&::-webkit-slider-thumb]:shadow-[0_0_9px_rgba(201,255,115,0.4)] " +
-  "[&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:h-[18px] [&::-moz-range-thumb]:w-[18px] [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-brand";
+  "[&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:h-[18px] [&::-webkit-slider-thumb]:w-[18px] [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#FF8A00] [&::-webkit-slider-thumb]:shadow-[0_0_9px_rgba(255,138,0,0.4)] " +
+  "[&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:h-[18px] [&::-moz-range-thumb]:w-[18px] [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-[#FF8A00]";
 
 export function BikeFilters({
   filters,
@@ -76,8 +83,11 @@ export function BikeFilters({
   const [open, setOpen] = useState(false);
 
   const priceMax = filters.maxPrice ?? PRICE_SLIDER.max;
+
   const [searchDraft, setSearchDraft] = useState(filters.search);
-  const [minPriceDraft, setMinPriceDraft] = useState(filters.minPrice ?? 0);
+  const [minPriceDraft, setMinPriceDraft] = useState(
+    filters.minPrice ?? 0,
+  );
   const [maxPriceDraft, setMaxPriceDraft] = useState(priceMax);
 
   const [synced, setSynced] = useState({
@@ -85,15 +95,24 @@ export function BikeFilters({
     minPrice: filters.minPrice ?? 0,
     maxPrice: priceMax,
   });
+
   if (
     synced.search !== filters.search ||
     synced.minPrice !== (filters.minPrice ?? 0) ||
     synced.maxPrice !== priceMax
   ) {
-    if (searchDraft === synced.search) setSearchDraft(filters.search);
-    if (minPriceDraft === synced.minPrice)
+    if (searchDraft === synced.search) {
+      setSearchDraft(filters.search);
+    }
+
+    if (minPriceDraft === synced.minPrice) {
       setMinPriceDraft(filters.minPrice ?? 0);
-    if (maxPriceDraft === synced.maxPrice) setMaxPriceDraft(priceMax);
+    }
+
+    if (maxPriceDraft === synced.maxPrice) {
+      setMaxPriceDraft(priceMax);
+    }
+
     setSynced({
       search: filters.search,
       minPrice: filters.minPrice ?? 0,
@@ -104,13 +123,18 @@ export function BikeFilters({
   const navigate = useCallback(
     (overrides: ParamOverrides) => {
       const params = new URLSearchParams();
+
       for (const [key, value] of Object.entries({
         ...toParams(filters, showTypeFilter),
         ...overrides,
       })) {
-        if (value) params.set(key, value);
+        if (value) {
+          params.set(key, value);
+        }
       }
+
       const query = params.toString();
+
       startTransition(() => {
         router.replace(query ? `${pathname}?${query}` : pathname, {
           scroll: false,
@@ -122,22 +146,42 @@ export function BikeFilters({
 
   useEffect(() => {
     const search = searchDraft.trim();
+
     if (search === filters.search) return;
+
     const timer = window.setTimeout(
       () => navigate({ search: search || undefined }),
       SEARCH_DEBOUNCE_MS,
     );
+
     return () => window.clearTimeout(timer);
   }, [searchDraft, filters.search, navigate]);
 
   useEffect(() => {
-    const min = minPriceDraft > 0 ? minPriceDraft : undefined;
-    const max = maxPriceDraft < PRICE_SLIDER.max ? maxPriceDraft : undefined;
-    if (min === filters.minPrice && max === filters.maxPrice) return;
+    const min =
+      minPriceDraft > 0 ? minPriceDraft : undefined;
+
+    const max =
+      maxPriceDraft < PRICE_SLIDER.max
+        ? maxPriceDraft
+        : undefined;
+
+    if (
+      min === filters.minPrice &&
+      max === filters.maxPrice
+    ) {
+      return;
+    }
+
     const timer = window.setTimeout(
-      () => navigate({ minPrice: asParam(min), maxPrice: asParam(max) }),
+      () =>
+        navigate({
+          minPrice: asParam(min),
+          maxPrice: asParam(max),
+        }),
       SEARCH_DEBOUNCE_MS,
     );
+
     return () => window.clearTimeout(timer);
   }, [
     minPriceDraft,
@@ -151,7 +195,12 @@ export function BikeFilters({
     const selected = filters.brands.includes(id)
       ? filters.brands.filter((brand) => brand !== id)
       : [...filters.brands, id];
-    navigate({ brand: selected.length ? selected.join(",") : undefined });
+
+    navigate({
+      brand: selected.length
+        ? selected.join(",")
+        : undefined,
+    });
   };
 
   const selectRange = (
@@ -159,7 +208,9 @@ export function BikeFilters({
     keys: [string, string],
     value: string,
   ) => {
-    const option = value === "" ? undefined : options[Number(value)];
+    const option =
+      value === "" ? undefined : options[Number(value)];
+
     navigate({
       [keys[0]]: asParam(option?.min),
       [keys[1]]: asParam(option?.max),
@@ -170,24 +221,37 @@ export function BikeFilters({
     setSearchDraft("");
     setMinPriceDraft(0);
     setMaxPriceDraft(PRICE_SLIDER.max);
-    startTransition(() => router.replace(pathname, { scroll: false }));
+
+    startTransition(() =>
+      router.replace(pathname, {
+        scroll: false,
+      }),
+    );
   };
 
   const activeCount =
     (filters.search ? 1 : 0) +
     filters.brands.length +
     (showTypeFilter && filters.type ? 1 : 0) +
-    (filters.minPrice !== undefined || filters.maxPrice !== undefined ? 1 : 0) +
-    (filters.minTopSpeed !== undefined || filters.maxTopSpeed !== undefined
+    (filters.minPrice !== undefined ||
+    filters.maxPrice !== undefined
       ? 1
       : 0) +
-    (filters.minRange !== undefined || filters.maxRange !== undefined ? 1 : 0);
+    (filters.minTopSpeed !== undefined ||
+    filters.maxTopSpeed !== undefined
+      ? 1
+      : 0) +
+    (filters.minRange !== undefined ||
+    filters.maxRange !== undefined
+      ? 1
+      : 0);
 
   const speedIndex = optionIndex(
     TOP_SPEED_OPTIONS,
     filters.minTopSpeed,
     filters.maxTopSpeed,
   );
+
   const rangeIndex = optionIndex(
     RANGE_OPTIONS,
     filters.minRange,
@@ -205,12 +269,15 @@ export function BikeFilters({
           className="flex items-center gap-2 text-lg font-semibold text-white lg:pointer-events-none"
         >
           <SlidersHorizontal className="h-5 w-5 text-[#0057D9]" />
+
           Filters
+
           {activeCount > 0 && (
             <span className="rounded-full bg-[#0057D9] px-2 py-0.5 text-xs font-bold text-ink-950">
               {activeCount}
             </span>
           )}
+
           <ChevronDown
             className={cn(
               "h-4 w-4 transition-transform lg:hidden",
@@ -218,6 +285,7 @@ export function BikeFilters({
             )}
           />
         </button>
+
         {isPending && (
           <span
             className="flex items-center gap-1.5 text-xs text-muted"
@@ -231,7 +299,10 @@ export function BikeFilters({
 
       <div
         id="bike-filters"
-        className={cn("mt-6 space-y-7", !open && "hidden lg:block")}
+        className={cn(
+          "mt-6 space-y-7",
+          !open && "hidden lg:block",
+        )}
       >
         <div>
           <label
@@ -240,13 +311,17 @@ export function BikeFilters({
           >
             Search
           </label>
+
           <div className="relative">
             <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-faint" />
+
             <input
               id="bike-search"
               type="search"
               value={searchDraft}
-              onChange={(event) => setSearchDraft(event.target.value)}
+              onChange={(event) =>
+                setSearchDraft(event.target.value)
+              }
               placeholder="Model name"
               className={cn(input, "pl-10")}
             />
@@ -261,19 +336,26 @@ export function BikeFilters({
             >
               Vehicle type
             </label>
+
             <div className="relative">
               <select
                 id="bike-type"
                 value={filters.type ?? ""}
                 onChange={(event) =>
-                  navigate({ type: event.target.value || undefined })
+                  navigate({
+                    type:
+                      event.target.value || undefined,
+                  })
                 }
                 className={select}
               >
                 <option value="">All types</option>
                 <option value="bike">Bikes</option>
-                <option value="scooter">Scooters</option>
+                <option value="scooter">
+                  Scooters
+                </option>
               </select>
+
               <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
             </div>
           </div>
@@ -284,6 +366,7 @@ export function BikeFilters({
             <legend className="mb-2.5 text-sm font-semibold text-soft">
               Brand
             </legend>
+
             <div className="max-h-56 space-y-1 overflow-y-auto pr-1">
               {brands.map((brand) => (
                 <label
@@ -292,10 +375,15 @@ export function BikeFilters({
                 >
                   <input
                     type="checkbox"
-                    checked={filters.brands.includes(brand._id)}
-                    onChange={() => toggleBrand(brand._id)}
-                    className="h-4 w-4 "
+                    checked={filters.brands.includes(
+                      brand._id,
+                    )}
+                    onChange={() =>
+                      toggleBrand(brand._id)
+                    }
+                    className="h-4 w-4"
                   />
+
                   {brand.displayName}
                 </label>
               ))}
@@ -307,28 +395,47 @@ export function BikeFilters({
           <legend className="mb-2.5 text-sm font-semibold text-soft">
             Price range
           </legend>
+
           <div className="mb-3 flex justify-between text-xs text-muted">
-            <span>{formatPKR(minPriceDraft)}</span>
+            <span>
+              {formatPKR(minPriceDraft)}
+            </span>
+
             <span>
               {formatPKR(maxPriceDraft)}
-              {maxPriceDraft >= PRICE_SLIDER.max && "+"}
+              {maxPriceDraft >= PRICE_SLIDER.max &&
+                "+"}
             </span>
           </div>
+
           <div className="relative h-6">
             <div className="absolute inset-x-1 top-2 h-1.5 rounded-full bg-ink-800" />
+
             <div
               className="absolute top-2 left-(--from) right-(--to) h-1.5 rounded-full bg-[#FF8A00]"
               style={
                 {
-                  "--from": `${(minPriceDraft / PRICE_SLIDER.max) * 100}%`,
-                  "--to": `${100 - (maxPriceDraft / PRICE_SLIDER.max) * 100}%`,
+                  "--from": `${
+                    (minPriceDraft /
+                      PRICE_SLIDER.max) *
+                    100
+                  }%`,
+                  "--to": `${
+                    100 -
+                    (maxPriceDraft /
+                      PRICE_SLIDER.max) *
+                      100
+                  }%`,
                 } as CSSProperties
               }
             />
+
             <input
               type="range"
               aria-label="Minimum price"
-              aria-valuetext={formatPKR(minPriceDraft)}
+              aria-valuetext={formatPKR(
+                minPriceDraft,
+              )}
               min={0}
               max={PRICE_SLIDER.max}
               step={PRICE_SLIDER.step}
@@ -337,16 +444,20 @@ export function BikeFilters({
                 setMinPriceDraft(
                   Math.min(
                     Number(event.target.value),
-                    maxPriceDraft - PRICE_SLIDER.step,
+                    maxPriceDraft -
+                      PRICE_SLIDER.step,
                   ),
                 )
               }
               className={rangeThumb}
             />
+
             <input
               type="range"
               aria-label="Maximum price"
-              aria-valuetext={formatPKR(maxPriceDraft)}
+              aria-valuetext={formatPKR(
+                maxPriceDraft,
+              )}
               min={0}
               max={PRICE_SLIDER.max}
               step={PRICE_SLIDER.step}
@@ -355,7 +466,8 @@ export function BikeFilters({
                 setMaxPriceDraft(
                   Math.max(
                     Number(event.target.value),
-                    minPriceDraft + PRICE_SLIDER.step,
+                    minPriceDraft +
+                      PRICE_SLIDER.step,
                   ),
                 )
               }
@@ -386,7 +498,11 @@ export function BikeFilters({
           options={RANGE_OPTIONS}
           selectedIndex={rangeIndex}
           onChange={(value) =>
-            selectRange(RANGE_OPTIONS, ["minRange", "maxRange"], value)
+            selectRange(
+              RANGE_OPTIONS,
+              ["minRange", "maxRange"],
+              value,
+            )
           }
         />
 
@@ -429,20 +545,32 @@ function RangeSelect({
       >
         {label}
       </label>
+
       <div className="relative">
         <select
           id={id}
-          value={selectedIndex === -1 ? "" : String(selectedIndex)}
-          onChange={(event) => onChange(event.target.value)}
+          value={
+            selectedIndex === -1
+              ? ""
+              : String(selectedIndex)
+          }
+          onChange={(event) =>
+            onChange(event.target.value)
+          }
           className={select}
         >
           <option value="">{anyLabel}</option>
+
           {options.map((option, index) => (
-            <option key={option.label} value={index}>
+            <option
+              key={option.label}
+              value={index}
+            >
               {option.label}
             </option>
           ))}
         </select>
+
         <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
       </div>
     </div>
