@@ -64,7 +64,6 @@ export async function Footer() {
       <div className="mx-auto w-full max-w-7xl px-4 pt-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 pb-10 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 xl:gap-8">
           <div className="sm:col-span-2 lg:col-span-4 xl:col-span-2">
-            {/* EVINN Logo */}
             <Link
               href="/"
               className="relative flex h-12 w-36 items-center"

@@ -54,28 +54,26 @@ export function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-[#06111F]/95 backdrop-blur">
+    <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-coal backdrop-blur">
       <nav
         aria-label="Main"
         className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8"
       >
-        {/* Logo */}
-        <Link
-          href="/"
-          className="relative flex h-10 w-32 items-center"
-          aria-label="EVINN home"
-        >
-          <Image
-            src="/evinn-logo.png"
-            alt="EVINN"
-            width={130}
-            height={45}
-            priority
-            className="h-auto w-auto max-h-10 object-contain"
-          />
-        </Link>
+       <Link
+  href="/"
+  className="relative flex h-11 w-32 items-center justify-center rounded-lg  px-2 pt-2 pb-1"
+  aria-label="EVINN home"
+>
+  <Image
+    src="/evinn-logo.png"
+    alt="EVINN"
+    width={130}
+    height={45}
+    priority
+    className="h-auto w-auto max-h-9 object-contain"
+  />
+</Link>
 
-        {/* Desktop Navigation */}
         <ul className="hidden items-center gap-6 text-[15px] font-medium text-gray-300 xl:flex">
           {NAV_LINKS.map((link) => {
             const active = isActivePath(pathname, link.href);
@@ -97,7 +95,6 @@ export function Navbar() {
           })}
         </ul>
 
-        {/* Right Side */}
         <div className="flex items-center gap-2 text-gray-300 sm:gap-3">
           <NavSearch />
 
@@ -110,7 +107,6 @@ export function Navbar() {
             Contact Us
           </Link>
 
-          {/* Mobile Menu Button */}
           <button
             type="button"
             onClick={() => setMobileOpen((open) => !open)}
@@ -128,7 +124,6 @@ export function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile Menu */}
       <AnimatePresence initial={false}>
         {mobileOpen && (
           <motion.div
