@@ -38,7 +38,6 @@ const SOCIAL_LINKS = [
   { icon: FaFacebookF, href: SITE.social.facebook, label: "Facebook" },
   { icon: FaInstagram, href: SITE.social.instagram, label: "Instagram" },
   { icon: FaLinkedinIn, href: SITE.social.linkedin, label: "LinkedIn" },
-  { icon: FaXTwitter, href: SITE.social.x, label: "X" },
 ];
 
 const BADGES = [
