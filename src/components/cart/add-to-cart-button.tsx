@@ -28,7 +28,7 @@ export function AddToCartButton({ bike, className }: AddToCartButtonProps) {
         setAdded(true);
       }}
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-lg bg-[#FF8A00] px-4 text-sm font-semibold text-ink-950 transition-colors hover:bg-brand-hover active:scale-[0.98]",
+        "inline-flex items-center justify-center gap-2 rounded-lg bg-[#FF8A00] px-4 text-sm font-semibold text-ink-950 transition-colors hover:bg-[#faa039] active:scale-[0.98]",
         className,
       )}
     >
