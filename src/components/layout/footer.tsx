@@ -1,8 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { BadgeCheck, Headphones, ShieldCheck, Truck } from "lucide-react";
-import { FaFacebookF, FaInstagram, FaLinkedinIn } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
+import { FaFacebookF, FaInstagram } from "react-icons/fa";
 import { getBrands } from "@/lib/catalog";
 import { SITE } from "@/data/site";
 import type { Brand } from "@/types/api";
@@ -35,16 +34,39 @@ const INFO_LINKS = [
 ];
 
 const SOCIAL_LINKS = [
-  { icon: FaFacebookF, href: SITE.social.facebook, label: "Facebook" },
-  { icon: FaInstagram, href: SITE.social.instagram, label: "Instagram" },
-  { icon: FaLinkedinIn, href: SITE.social.linkedin, label: "LinkedIn" },
+  {
+    icon: FaFacebookF,
+    href: "https://www.facebook.com/share/1Bz2KaZszK/",
+    label: "Facebook",
+  },
+  {
+    icon: FaInstagram,
+    href: "https://www.instagram.com/evinn_pakistan/",
+    label: "Instagram",
+  },
 ];
 
 const BADGES = [
-  { icon: ShieldCheck, title: "Cash on Delivery", sub: "Pay when it arrives" },
-  { icon: Truck, title: "Nationwide Delivery", sub: "Across Pakistan" },
-  { icon: BadgeCheck, title: "Authorized Dealers", sub: "Genuine Products" },
-  { icon: Headphones, title: "Dedicated Support", sub: "We're Here to Help" },
+  {
+    icon: ShieldCheck,
+    title: "Cash on Delivery",
+    sub: "Pay when it arrives",
+  },
+  {
+    icon: Truck,
+    title: "Nationwide Delivery",
+    sub: "Across Pakistan",
+  },
+  {
+    icon: BadgeCheck,
+    title: "Authorized Dealers",
+    sub: "Genuine Products",
+  },
+  {
+    icon: Headphones,
+    title: "Dedicated Support",
+    sub: "We're Here to Help",
+  },
 ];
 
 async function loadBrands(): Promise<Brand[]> {
@@ -62,6 +84,7 @@ export async function Footer() {
     <footer className="w-full bg-coal text-gray-400">
       <div className="mx-auto w-full max-w-7xl px-4 pt-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 pb-10 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 xl:gap-8">
+
           <div className="sm:col-span-2 lg:col-span-4 xl:col-span-2">
             <Link
               href="/"
@@ -127,10 +150,15 @@ export async function Footer() {
               key={title}
               className="flex items-center gap-3 rounded-lg border border-white/10 px-3 py-3"
             >
-              <Icon className="h-5 w-5 shrink-0 text-[#0057D9]" aria-hidden />
+              <Icon
+                className="h-5 w-5 shrink-0 text-[#0057D9]"
+                aria-hidden
+              />
 
               <span className="text-xs">
-                <span className="block font-medium text-gray-300">{title}</span>
+                <span className="block font-medium text-gray-300">
+                  {title}
+                </span>
                 {sub}
               </span>
             </li>
@@ -138,8 +166,10 @@ export async function Footer() {
         </ul>
 
         <div className="flex flex-col gap-3 border-t border-white/10 py-5 text-center text-xs sm:text-sm lg:flex-row lg:items-center lg:justify-between lg:text-left">
+
           <p className="flex items-center justify-center gap-2 lg:justify-start">
             © {new Date().getFullYear()}{" "}
+
             <span className="inline-flex h-7 w-20 items-center">
               <Image
                 src="/evinn-logo.png"
@@ -149,11 +179,15 @@ export async function Footer() {
                 className="h-auto max-h-7 w-auto object-contain"
               />
             </span>
+
             . All Rights Reserved.
           </p>
 
           <p>
-            <a href={`mailto:${SITE.email}`} className="hover:text-[#0057D9]">
+            <a
+              href={`mailto:${SITE.email}`}
+              className="hover:text-[#0057D9]"
+            >
               {SITE.email}
             </a>
 
