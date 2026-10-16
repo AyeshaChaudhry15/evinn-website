@@ -362,9 +362,38 @@ export function TestRideForm({
       <button
         type="submit"
         disabled={submitting}
-        className={cn(buttonPrimary, "mt-2 w-full py-3.5 sm:col-span-2")}
+        className={cn(
+          buttonPrimary,
+          `
+      mt-2
+      w-full
+      py-3.5
+      sm:col-span-2
+
+      !bg-[#FF8A00]
+      !text-white
+
+      transition-all
+      duration-200
+
+      hover:!bg-[#FF9F33]
+      hover:!text-white
+
+      hover:shadow-[0_8px_25px_rgba(255,138,0,0.30)]
+
+      focus:outline-none
+      focus:ring-2
+      focus:ring-[#FF8A00]/50
+      focus:ring-offset-2
+      focus:ring-offset-[#07121d]
+
+      disabled:cursor-not-allowed
+      disabled:opacity-60
+    `,
+        )}
       >
         {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
+
         {submitting ? "Submitting…" : "Submit Request"}
       </button>
     </form>
